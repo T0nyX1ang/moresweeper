@@ -37,6 +37,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9  # pin Python version 3.9
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
