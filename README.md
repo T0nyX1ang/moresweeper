@@ -1,0 +1,2 @@
+# moresweeper
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0ba887aed01d42f08992cbf8029ec03c)](https://app.codacy.com/gh/T0nyX1ang/moresweeper?utm_source=github.com&utm_medium=referral&utm_content=T0nyX1ang/moresweeper&utm_campaign=Badge_Grade_Settings)
