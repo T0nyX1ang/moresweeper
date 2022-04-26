@@ -6,6 +6,8 @@ from time import monotonic_ns, perf_counter_ns
 
 timer = perf_counter_ns
 NS2MS = 1e-6
+
+
 class Tile(object):
     """Tile: Minimum unit of minesweeper."""
 
@@ -47,7 +49,7 @@ class Tile(object):
 
         # set the value of a mine's neighbour
         # this will simplify board construction process
-        for t in self.get_neighbours():
+        for t in self.neighbours:
             if not t.is_mine():
                 t.value += 1  # update a neighbour's value
 
@@ -106,7 +108,7 @@ class Tile(object):
     def double_hold(self):
         """Change status when holding the left and right mouse key."""
         self.left_hold()
-        for t in self.get_neighbours():
+        for t in self.neighbours:
             t.left_hold()
 
     def unhold(self):
@@ -119,8 +121,8 @@ class Tile(object):
         if self.flagged or not self.covered:
             return False, set()
         self.covered = False
-        if self.value == 0 or (BFS and self.value == self.neighbour_flags): 
-            return True, self.get_neighbours()
+        if self.value == 0 or (BFS and self.value == self.neighbour_flags):
+            return True, self.neighbours
         return True, set()
 
     def open(self, BFS: bool = False, test_op: bool = False):
@@ -155,25 +157,24 @@ class Tile(object):
     def double(self, BFS: bool = False):
         """Handle chording."""
         if not self.covered and self.value == self.neighbour_flags:
-            return set.union(*(t.open(BFS) for t in self.get_neighbours()))
+            return set.union(*(t.open(BFS) for t in self.neighbours))
         return set()
 
     def flag(self, easy_flag: bool = False):
         """Handle flagging and easy flagging."""
         if self.flagged:
             self.flagged = False
-            for t in self.get_neighbours():
+            for t in self.neighbours:
                 t.neighbour_flags -= 1  # update the number of neighbour flags
             return set((self, ))
         elif self.covered:
             self.flagged = True
-            for t in self.get_neighbours():
+            for t in self.neighbours:
                 t.neighbour_flags += 1  # update the number of neighbour flags
             return set((self, ))
         elif easy_flag:
-            covered_neighbours = set(t for t in self.get_neighbours()
-                                     if t.covered)
-            unflagged_neighbours = set(t for t in self.get_neighbours()
+            covered_neighbours = set(t for t in self.neighbours if t.covered)
+            unflagged_neighbours = set(t for t in self.neighbours
                                        if t.covered and not t.flagged)
             if self.value == len(covered_neighbours):
                 for t in covered_neighbours:
